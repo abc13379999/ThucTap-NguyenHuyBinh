@@ -1,6 +1,8 @@
 package com.intern.taskmanager.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @AllArgsConstructor
@@ -13,11 +15,13 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Name không được để trống")
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Email(message = "Email không hợp lệ")
+    @NotBlank(message = "Email không được để trống")
+    @Column(unique = true)
     private String email;
 }

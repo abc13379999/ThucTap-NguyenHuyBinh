@@ -2,6 +2,7 @@ package com.intern.taskmanager.Controller;
 
 import com.intern.taskmanager.Entity.User;
 import com.intern.taskmanager.Service.UserSerive;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class UserController {
     private final UserSerive userSerive;
 
     @PostMapping
-    public User createUser(@RequestBody  User user) {
+    public User createUser(@Valid @RequestBody  User user) {
         return userSerive.createUser(user);
     }
 
