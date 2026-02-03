@@ -1,9 +1,12 @@
 package com.intern.taskmanager.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +27,8 @@ public class User {
     @NotBlank(message = "Email không được để trống")
     @Column(unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Task> tasks;
 }
