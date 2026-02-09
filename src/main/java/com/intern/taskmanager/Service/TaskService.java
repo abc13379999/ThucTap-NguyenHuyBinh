@@ -2,7 +2,9 @@ package com.intern.taskmanager.Service;
 
 import com.intern.taskmanager.Entity.Project;
 import com.intern.taskmanager.Entity.Task;
+import com.intern.taskmanager.Entity.TaskStatus;
 import com.intern.taskmanager.Entity.User;
+import com.intern.taskmanager.Exception.ResourceNotFoundException;
 import com.intern.taskmanager.Repository.ProjectRepository;
 import com.intern.taskmanager.Repository.TaskRepository;
 import com.intern.taskmanager.Repository.UserRepository;
@@ -55,4 +57,55 @@ public class TaskService {
 
         taskRepository.delete(task);
     }
+
+    public Task createSimpleTask(Task task) {
+        task.setStatus(TaskStatus.TODO);
+        return taskRepository.save(task);
+    }
+
+
+    public Task createTask(Long projectId, Task task) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        task.setProject(project);
+        task.setStatus(TaskStatus.TODO);
+
+        return taskRepository.save(task);
+    }
+
+    public Task assignTask(Long taskId, Long userId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Project project = task.getProject();
+
+        if (!user.getProjects().contains(project)) {
+            throw new RuntimeException("User does not belong to this project");
+        }
+
+        if (!task.getProject().getUsers().contains(user)) {
+            throw new RuntimeException("User not in project");
+        }
+
+        task.setUser(user);
+        return taskRepository.save(task);
+    }
+
+    public Task updateStatus(Long taskId, TaskStatus newStatus) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        if (task.getStatus() == TaskStatus.DONE) {
+            throw new RuntimeException("Task DONE cannot be updated");
+        }
+
+        task.setStatus(newStatus);
+        return taskRepository.save(task);
+    }
+
+
 }

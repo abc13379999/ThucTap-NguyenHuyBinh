@@ -24,6 +24,9 @@ public class Project {
     private String name;
 
     @OneToMany(mappedBy = "project")
-    @JsonManagedReference
+    @JsonManagedReference("project-tasks")
     private List<Task> tasks;
+
+    @ManyToMany(mappedBy = "projects")
+    private List<User> users;
 }

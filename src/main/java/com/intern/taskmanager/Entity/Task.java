@@ -17,15 +17,18 @@ public class Task {
     private Integer id;
 
     private String title;
-    private String status;
+//    private String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference("user-tasks")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonBackReference
+    @JsonBackReference("project-tasks")
     private Project project;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 }
