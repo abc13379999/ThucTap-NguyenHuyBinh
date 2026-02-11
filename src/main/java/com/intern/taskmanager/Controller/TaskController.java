@@ -1,9 +1,13 @@
 package com.intern.taskmanager.Controller;
 
+import com.intern.taskmanager.DTO.ApiResponse;
+import com.intern.taskmanager.DTO.TaskRequest;
 import com.intern.taskmanager.Entity.Task;
 import com.intern.taskmanager.Entity.TaskStatus;
 import com.intern.taskmanager.Service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +19,16 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/user/{userId}/project/{projectId}")
-    public Task createTask(@PathVariable Long userId,
-                           @PathVariable Long projectId,
-                           @RequestBody Task task) {
-        return taskService.createTask(userId, projectId, task);
+    public ResponseEntity<ApiResponse<Task>> createTask(
+            @PathVariable Long userId,
+            @PathVariable Long projectId,
+            @Valid @RequestBody TaskRequest taskRequest
+    ) {
+        Task task = taskService.createTask(userId, projectId, taskRequest);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(200, "Create task successfully", task)
+        );
     }
 
     @GetMapping("/user/{userId}")
@@ -63,5 +73,7 @@ public class TaskController {
     ) {
         return taskService.updateStatus(taskId, status);
     }
+
+
 
 }

@@ -1,9 +1,11 @@
 package com.intern.taskmanager.Service;
 
+import com.intern.taskmanager.DTO.TaskRequest;
 import com.intern.taskmanager.Entity.Project;
 import com.intern.taskmanager.Entity.Task;
 import com.intern.taskmanager.Entity.TaskStatus;
 import com.intern.taskmanager.Entity.User;
+import com.intern.taskmanager.Exception.BadRequestException;
 import com.intern.taskmanager.Exception.ResourceNotFoundException;
 import com.intern.taskmanager.Repository.ProjectRepository;
 import com.intern.taskmanager.Repository.TaskRepository;
@@ -11,6 +13,7 @@ import com.intern.taskmanager.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,13 +23,22 @@ public class TaskService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
-    public Task createTask(Long userId, Long projectId, Task task) {
+    public Task createTask(Long userId, Long projectId, TaskRequest taskRequest) {
+
+        if (taskRequest.getDeadline().isBefore(LocalDate.now())) {
+            throw new BadRequestException("Deadline phải lớn hơn ngày hiện tại");
+        }
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
 
+        Task task = new Task();
+        task.setTitle(taskRequest.getTitle());
+        task.setDeadline(taskRequest.getDeadline());
+        task.setStatus(TaskStatus.TODO);
         task.setUser(user);
         task.setProject(project);
 

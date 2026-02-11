@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -18,6 +20,8 @@ public class Task {
 
     private String title;
 //    private String status;
+
+    private LocalDate deadline;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
