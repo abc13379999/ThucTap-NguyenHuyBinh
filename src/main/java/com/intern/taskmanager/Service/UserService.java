@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserSerive {
+public class UserService {
 
     private final UserRepository userRepository;
 

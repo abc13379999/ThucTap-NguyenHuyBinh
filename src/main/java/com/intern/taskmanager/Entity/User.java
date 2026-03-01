@@ -1,5 +1,6 @@
 package com.intern.taskmanager.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -27,6 +28,15 @@ public class User {
     @NotBlank(message = "Email không được để trống")
     @Column(unique = true)
     private String email;
+
+    @JsonIgnore
+    @NotBlank(message = "Password không được để trống")
+    private String password;
+
+    // THÊM MỚI: role của user (USER hoặc MANAGER)
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference("user-tasks")

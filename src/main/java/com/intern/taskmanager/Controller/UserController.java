@@ -1,39 +1,36 @@
 package com.intern.taskmanager.Controller;
 
-import com.intern.taskmanager.Entity.Project;
+import com.intern.taskmanager.DTO.ApiResponse;
 import com.intern.taskmanager.Entity.User;
-import com.intern.taskmanager.Service.UserSerive;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import com.intern.taskmanager.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserSerive userSerive;
+    private final UserService userService;
 
     @PostMapping
-    public User createUser(@Valid @RequestBody  User user) {
-        return userSerive.createUser(user);
+    public ResponseEntity<ApiResponse<User>> createUser(@Valid @RequestBody User user) {
+        User created = userService.createUser(user);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Tạo user thành công", created));
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userSerive.getAllUsers();
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
+        return ResponseEntity.ok(new ApiResponse<>(200, "OK", userService.getAllUsers()));
     }
-
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userSerive.getUserById(id);
+    public ResponseEntity<ApiResponse<User>> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(200, "OK", userService.getUserById(id)));
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Project> projects;
 }
