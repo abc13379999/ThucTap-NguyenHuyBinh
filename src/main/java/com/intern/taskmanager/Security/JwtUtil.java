@@ -9,9 +9,6 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    // Khai báo trong application.properties:
-    // jwt.secret=your-secret-key-minimum-256-bits-long-please
-    // jwt.expiration=86400000
     @Value("${jwt.secret}")
     private String secret;
 
@@ -22,7 +19,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    // Tạo token từ email + role
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -33,17 +29,14 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Lấy email từ token
     public String extractEmail(String token) {
         return getClaims(token).getSubject();
     }
 
-    // Lấy role từ token
     public String extractRole(String token) {
         return getClaims(token).get("role", String.class);
     }
 
-    // Kiểm tra token còn hợp lệ không
     public boolean isTokenValid(String token) {
         try {
             getClaims(token);

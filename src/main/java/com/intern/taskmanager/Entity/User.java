@@ -33,7 +33,6 @@ public class User {
     @NotBlank(message = "Password không được để trống")
     private String password;
 
-    // THÊM MỚI: role của user (USER hoặc MANAGER)
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

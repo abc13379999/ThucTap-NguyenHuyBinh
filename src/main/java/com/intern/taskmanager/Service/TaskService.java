@@ -75,7 +75,6 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-
     public Task createTask(Long projectId, Task task) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found"));

@@ -15,7 +15,6 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
@@ -27,7 +26,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // Kiểm tra header có dạng "Bearer <token>"
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 

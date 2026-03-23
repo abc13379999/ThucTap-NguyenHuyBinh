@@ -48,7 +48,6 @@ public class AuthService {
             throw new BadRequestException("Email hoặc password không đúng");
         }
 
-        // Tạo JWT token chứa email + role
         return jwtUtil.generateToken(user.getEmail(), user.getRole().getName());
     }
 }
