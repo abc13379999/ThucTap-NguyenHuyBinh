@@ -28,5 +28,6 @@ public class Project {
     private List<Task> tasks;
 
     @ManyToMany(mappedBy = "projects")
+    @JsonIgnore
     private List<User> users;
 }

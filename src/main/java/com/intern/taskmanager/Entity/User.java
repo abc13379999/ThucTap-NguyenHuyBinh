@@ -42,6 +42,7 @@ public class User {
     private List<Task> tasks;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "user_project",
             joinColumns = @JoinColumn(name = "user_id"),

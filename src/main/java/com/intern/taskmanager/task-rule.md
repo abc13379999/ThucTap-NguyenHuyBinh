@@ -15,3 +15,14 @@
 
 ## 4. Update Task Status
 - Không cho update nếu task đã DONE
+
+## 5. Deadline Validation 
+- Deadline phải là ngày tương lai (@Future) 
+- Title không được rỗng, tối đa 50 ký tự 
+
+## 6. Create Task 
+- Status mặc định = TODO (client không tự set) 
+
+## 7. Assign Task chỉ MANAGER mới được làm 
+
+## 8. Flow: TODO → IN_PROGRESS → DONE (1 chiều)
